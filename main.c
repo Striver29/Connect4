@@ -2,11 +2,12 @@
 #include <stdlib.h>
 # include "headers.h"
 
-int** board = createGrid();
 int row;
 int column;
 
 void main(){
+    
+int** board = createGrid();
 printf("Welcome to Connect Four!");
 
 char playerA = 'A';
@@ -32,3 +33,12 @@ printf("Player %c, choose a column (0-7): ", playerA);
 printf("Player %c wins!", currentPlayer);
 printf("Program finished with exit code 0");
 }
+
+
+//// Place a checker for the player in the chosen column
+// Returns 1 if successful, 0 if column is full
+int placeChecker(char board[ROWS][COLS], int col, char player) {
+    for (int i = ROWS - 1; i >= 0; i--) {
+        if (board[i][col] == '-') {
+            board[i][col] = player;
+            return 1;
