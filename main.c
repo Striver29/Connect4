@@ -23,12 +23,4 @@ printf("Player %c, choose a column (0-7): ", playerA);
 
  print(board);
 
- if (currentPlayer == playerA) {
-            currentPlayer = playerB;
-        } else {
-            currentPlayer = playerA;
-        }
-}
-printf("Player %c wins!", currentPlayer);
-printf("Program finished with exit code 0");
 }
