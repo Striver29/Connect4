@@ -6,6 +6,7 @@ int** board = createGrid();
 int row;
 int column;
 
+void main(){
 printf("Welcome to Connect Four!");
 
 char playerA = 'A';
@@ -16,6 +17,7 @@ printf("Player B: %c\n\n", playerB);
 print(board);
 
 printf("Player %c, choose a column (0-7): ", playerA);
- scanf("%d", &column);
+ scanf("%d", &column);p
 
 
+}
