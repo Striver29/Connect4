@@ -9,7 +9,7 @@ int main(int argc, char** argv){
     
     
 int** board = createGrid();
-printf("Welcome to Connect Four!");
+printf("Welcome to Connect Four!\n");
 
 char playerA = 'A';
 char playerB = 'B';
@@ -24,6 +24,10 @@ print(board);
 
 printf("Player %c, choose a column (1-7): ", playerA);
  scanf("%d", &column);
+
+ if(column == 10) {
+    break; 
+ }
 
 // eza msh value akbar mn column 
 if (column < 1 || column >7){
