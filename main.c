@@ -7,6 +7,8 @@ int column;
 
 void main(){
     
+    int x = 10; 
+    
 int** board = createGrid();
 printf("Welcome to Connect Four!");
 
