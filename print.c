@@ -2,6 +2,8 @@
 #include "headers.h"
 
 void print(int** arr) {
+
+    printf("\n"); 
     
     for(int i = 0; i < 6; i++) {
         for(int j = 0; j < 7; j++) {
@@ -20,5 +22,7 @@ void print(int** arr) {
     for(int i = 1; i < 8; i++) {
         printf("%d ", i); 
     }
+    
+    printf("\n");
 }
  

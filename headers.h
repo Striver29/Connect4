@@ -3,6 +3,6 @@
 
 void print(int**);
 int** createGrid();
-int place(int**, int, char)
+int place(int**, int, char);
 
 #endif

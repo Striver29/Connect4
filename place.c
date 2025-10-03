@@ -2,7 +2,8 @@
 #include "headers.h"
 
 int place(int** arr, int col, char letter) {
-    for(int i = 6; i >=0; i--) {
+    col--;
+    for(int i = 5; i >=0; i--) {
         if(arr[i][col] == 0) {
             if(letter == 'A') {
                 arr[i][col] = 1; 
