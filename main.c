@@ -22,7 +22,7 @@ while (1){
 print(board);
 
 
-printf("Player %c, choose a column (1-7): ", playerA);
+printf("Player %c, choose a column (1-7): ", currentPlayer);
  scanf("%d", &column);
 
  if(column == 10) {
@@ -42,6 +42,14 @@ if (!place(board, column, currentPlayer)) {
          continue; 
     }
 
+int win = checkWin(board, (64 - currentPlayer) * -1); 
+
+if(win == 1) {
+    print(board);
+    printf("Player %c wins!", currentPlayer);
+    break;
+} 
+
 
 // switch players
  if (currentPlayer == playerA) {
@@ -50,8 +58,7 @@ if (!place(board, column, currentPlayer)) {
             currentPlayer = playerA;
         }
 }
-printf("Player %c wins!", currentPlayer);
-printf("Program finished with exit code 0");
+
 
 for(int i = 0; i < 7; i++) {
     free(board[i]); 
