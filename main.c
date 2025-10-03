@@ -16,13 +16,6 @@ char currentPlayer= playerA;
 printf("Player A: %c\n", playerA);
 printf("Player B: %c\n\n", playerB);
 
-
-for (i=0; i=7; i++){
-    for (j=0;j=6;j++){
-     
-    }
-}
-
 while (true){ 
 // print empty  broad first
 print(board);
