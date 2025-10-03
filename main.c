@@ -31,14 +31,14 @@ printf("Player %c, choose a column (1-7): ", currentPlayer);
 
 // eza msh value akbar mn column 
 if (column < 1 || column >7){
-    printf("Invalid! choose another.\n");
+    printf("\nInvalid! choose another.\n");
          continue;
 }
 
 
 // eza fe place 
 if (!place(board, column, currentPlayer)) {
-      printf("Column full! Choose another.\n");
+      printf("\nColumn full! Choose another.\n");
          continue; 
     }
 
