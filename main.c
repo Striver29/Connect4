@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "headers.h"
-#include "unistd.h"
 
 int row;
 int column;
@@ -24,8 +23,7 @@ print(board);
 
 
 printf("Player %c, choose a column (1-7): ", currentPlayer);
-sleep(1); //to Print above before taking value
- scanf("%d", &column);
+scanf("%d", &column);
 
  if(column == 10) {
     break; 
