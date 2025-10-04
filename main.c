@@ -23,6 +23,7 @@ print(board);
 
 
 printf("Player %c, choose a column (1-7): ", currentPlayer);
+fflush(stdout);
 scanf("%d", &column);
 
  if(column == 10) {
