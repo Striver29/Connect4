@@ -10,13 +10,15 @@ int main(int argc, char** argv){
 int** board = createGrid();
 printf("Welcome to Connect Four!\n");
 
-printf("Do you want to play against human or bot? \n Enter 0 for human or 1 for bot: ");
+printf("Do you want to play against human or bot? \nEnter 0 for human or 1 for bot: ");
 int x;
+fflush(stdout); 
 scanf("%d",&x);
 
 int mode = 0; 
 if(x==1){
-printf("Choose the level: \n Enter 1 for easy, 2 for Medium, 3 for Hard:  ");
+printf("Choose the level: \nEnter 1 for easy, 2 for Medium, 3 for Hard:  ");
+fflush(stdout); 
 scanf("%d",&mode);
 }
 
@@ -33,6 +35,10 @@ print(board);
 
 printf("Player %c, choose a column (1-7): ", currentPlayer);
 fflush(stdout);
+
+if(currentPlayer == playerA) {
+    scanf("%d", &column); 
+}
 
 if(currentPlayer == playerB) {
     if(mode == 1) {
