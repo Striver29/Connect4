@@ -9,4 +9,5 @@ int horizontal(int** arr, int current);
 int vertical(int** arr, int current); 
 int diagonal(int** arr, int current); 
 int easyBot(int** arr); 
+int mediumBot(int** arr); 
 #endif
