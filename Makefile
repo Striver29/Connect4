@@ -1,5 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -Werror
-OBJECTS = main.c createGrid.c print.c checkWin.c place.c easyBot.c mediumBot.c
-connect: $(OBJECTS)
-	$(CC) $(CFLAGS) -o $(OBJECTS) 
+SOURCES = main.c createGrid.c print.c checkWin.c place.c easyBot.c mediumBot.c
+OBJECTS = $(SOURCES:.c=.o)
+TARGET = connect
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJECTS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJECTS) $(TARGET)
