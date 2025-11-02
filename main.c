@@ -51,6 +51,8 @@ if(currentPlayer == playerA) {
 if(currentPlayer == playerB) {
     if(mode == 1) {
         column = easyBot(board); 
+    } else if(mode == 2) {
+        column = mediumBot(board); 
     } else {
         int status = scanf("%d", &column);
 
