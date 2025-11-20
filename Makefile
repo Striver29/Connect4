@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Werror
-SOURCES = main.c createGrid.c print.c checkWin.c place.c easyBot.c mediumBot.c
+SOURCES = main.c createGrid.c print.c checkWin.c place.c easyBot.c mediumBot.c hardBot.c
 OBJECTS = $(SOURCES:.c=.o)
 TARGET = connect
 

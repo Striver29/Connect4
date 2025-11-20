@@ -17,3 +17,6 @@ int place(int** arr, int col, char letter) {
 
     return 0; 
 }
+
+
+
