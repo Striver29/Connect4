@@ -53,10 +53,10 @@ if(currentPlayer == playerB) {
         column = easyBot(board); 
     } else if(mode == 2) {
         column = mediumBot(board); 
-        
-        else if(mode == 3) 
-            column = hardBot(board); 
-    } else {
+    } else if(mode == 3) {
+        column = hardBot(board);
+    }
+      else {
         int status = scanf("%d", &column);
 
         if(status == 0) {
