@@ -16,8 +16,9 @@ while (1){
 if (fgets(buffer, sizeof(buffer), stdin)== NULL){
 return -1;
 }
-
-toupper(buffer);
+for (int i = 0; buffer[i] != '\0'; i++) {
+ buffer[i] = toupper((unsigned char)buffer[i]);
+}
 if (sscanf(buffer, "MOVE %d", &col)==1 || sscanf(buffer, "%d", &col)==1){
     return col;
 }
@@ -72,7 +73,10 @@ int col = -1;
             fflush(stdout);           
             if (scanf("%d", &col) != 1) {   
                 printf("Invalid input. Please enter a number.\n");
-                while (getchar() != '\n');
+                while (getchar() != '\n'){
+                    ;
+                }
+
                 continue;             
             }
 
