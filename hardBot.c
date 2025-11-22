@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include "headers.h"
+#define BOT 2
+#define OPP 1
+#define DEPTH 6
 
 // check move
 int checkMove(int** arr, int column){
@@ -35,7 +39,7 @@ void simulatePlace(int** arr, int row, int col, int player) {
 }
 
 // undoMove
-void undoMove(int** arr, int row , int col){
+void undoPlace(int** arr, int row , int col){
     arr[row][col]=0;
 }
 
@@ -117,4 +121,88 @@ int evaluateWindow(int arr[]) {
         return -300; 
 
     return 0; 
+}
+
+int minimax(int** arr, int depth, int alpha, int beta, int isMaximising) {
+    //base cases
+    if(checkWin(arr, BOT)) {
+        return 1000000; 
+    } 
+    if(checkWin(arr, OPP)) {
+        return -1000000; 
+    }
+    if(checkFull(arr)){
+        return 0; 
+    } 
+    if(depth == 0) {
+        return evaluateBoard(arr);
+    }
+
+    if(isMaximising) {
+        int bestScore = -100000000000; 
+        int score = 0;
+
+        for(int i = 0; i < 7; i++) {
+            int row = LandingRow(arr, i); 
+            if(row == -1) 
+                continue;
+            
+            simulatePlace(arr, row, i, BOT); 
+            score = minimax(arr, depth-1, alpha, beta, 0);
+            undoPlace(arr, row, i); 
+            if(score >= bestScore) {
+                bestScore = score; 
+            }
+
+            if(bestScore >= alpha) 
+                alpha = bestScore;  
+
+            if(beta <= alpha)   
+                break;
+            
+        }
+        return bestScore; 
+    }
+
+    else {
+        int bestScore = 100000000000; 
+
+        for(int i = 0; i < 7; i++) {
+            int row = LandingRow(arr, i); 
+            if(row == -1) 
+                continue;
+            simulatePlace(arr, row, i, OPP); 
+            int score = minimax(arr, depth-1, alpha, beta, 1); 
+            undoPlace(arr, row, i); 
+            if(score <= bestScore)
+                bestScore = score; 
+            if(bestScore <= beta)
+                beta = bestScore; 
+            if(beta <= alpha)
+                break;
+        }
+
+        return bestScore;
+    }
+}
+
+int hardBot(int** arr) {
+    int bestScore = 0; 
+    int bestCol = 3; 
+
+    for(int i = 0; i < 7; i++) {
+        int row = LandingRow(arr, i); 
+        if(row == -1) 
+            continue;
+        simulatePlace(arr, row, i, BOT); 
+        int score = minimax(arr, DEPTH-1, 100000000000, -100000000000, 0); 
+        undoPlace(arr, row, i); 
+
+        if(score >= bestScore) {
+            bestScore = score; 
+            bestCol = i; 
+        }
+    }
+
+    return bestCol;
 }
