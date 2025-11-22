@@ -11,6 +11,6 @@ int diagonal(int** arr, int current);
 int easyBot(int** arr); 
 int mediumBot(int** arr); 
 int hardBot(int** arr);
-int networkServer(int current, int** arr);
-int networkClient(int current, int** arr);
+int networkServer(char current, int** arr);
+int networkClient(char current, int** arr);
 #endif

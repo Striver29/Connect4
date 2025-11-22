@@ -25,10 +25,10 @@ if (sscanf(buffer, "MOVE %d", &col)==1 || sscanf(buffer, "%d", &col)==1){
 }
 }
 
-int networkServer(int current, int** arr){
+int networkServer(char current, int** arr){
 int col=-1;
 // player A 
-if (current==1){
+if (current=='A'){
     while (1){
      printf("Player A (server), enter column (1-7): ");//
         fflush(stdout);    
@@ -60,13 +60,13 @@ if (current==1){
 }
 
 
-int networkClient(int current, int** arr){
+int networkClient(char current, int** arr){
 int col = -1;
 
 
     // client = Player  B
     //  the client should ask its LOCAL user
-    if (current == 2) {
+    if (current == 'B') {
 
         while (1) {                     
             printf("Player 2 (client), enter column (1-7): ");
