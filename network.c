@@ -34,7 +34,7 @@ if (current==1){
         fflush(stdout);    
      if (scanf("%d", &col) != 1) {   // scanf returns 1 when it reads one integer only
         printf("Invalid input. Please enter a number: \n");
-        while (getchar() != '\n');   // to remove the other unneeded parts like move
+        while (getchar() != '\n')   // to remove the other unneeded parts like move
                 continue;    
     }
     // send the move to the other computers

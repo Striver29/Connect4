@@ -47,12 +47,13 @@ scanf("%d",&mode);
 }
 }
 
-char buff; 
-scanf("%c", buff); 
+int c;
+while ((c = getchar()) != '\n' && c != EOF) {}
+
 
 printf("Do you want to be player A or B?\n"); 
 char player; 
-scanf("%c", player); 
+scanf("%c", &player); 
 
 char playerA = 'A';
 char playerB = 'B';
