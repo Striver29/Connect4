@@ -4,16 +4,6 @@
 #define OPP 1
 #define DEPTH 6
 
-// check move
-int checkMove(int** arr, int column){
-  if(column > 7 || column < 0){
-    return 0;
-}
-  if (arr[0][column]==0){
-    return 1;
- }
-return 0; 
-}
 
 int checkFull(int** arr) {
     for(int i = 0; i < 7; i++) {
@@ -185,11 +175,14 @@ int minimax(int** arr, int depth, long alpha, long beta, int isMaximising) {
 int hardBot(int** arr) {
     long bestScore = -100000000000; 
     int bestCol = 3; 
+    int full = 0; 
 
     for(int i = 0; i < 7; i++) {
         int row = LandingRow(arr, i); 
-        if(row == -1) 
+        if(row == -1) {
+            full++; 
             continue;
+        }
         simulatePlace(arr, row, i, BOT); 
         int score = minimax(arr, DEPTH-1, -100000000000, 100000000000, 0); 
         undoPlace(arr, row, i); 
@@ -199,6 +192,10 @@ int hardBot(int** arr) {
             bestCol = i; 
         }
     }
+
+    if(full == 7)
+        return -1; 
+
     bestCol++; 
     return bestCol;
 }
