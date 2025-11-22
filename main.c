@@ -10,18 +10,41 @@ int main(int argc, char** argv){
 int** board = createGrid();
 printf("Welcome to Connect Four!\n");
 
+// networking part
+printf("\n Enable network mode?(Enter s for server, c for client, n for normal): ");
+char netMode;
+scanf(" %c", &netMode);
+int network=0;
+int port=0;
+
+if (netMode=='s'|| netMode=='c'){
+    network=1;
+    if (netMode=='s'){
+        printf("Enter port to listen to: ");
+        scanf("%d", &port);
+    }else if(netMode=='c'){
+        printf("Enter server port to connect to: ");
+        scanf("%d", &port); 
+    }
+}
+
+int x=0;
+int mode = 0; 
+
+if (network==0){
 printf("\nDo you want to play against a human or a bot? \nEnter 0 for human\nEnter 1 for bot\n");
-int x;
+
 fflush(stdout); 
 scanf("%d",&x);
 
 printf("\n"); 
 
-int mode = 0; 
+
 if(x==1){
 printf("Choose the level: \nEnter 1 for easy\nEnter 2 for Medium\nEnter 3 for Hard\n");
 fflush(stdout); 
 scanf("%d",&mode);
+}
 }
 
 char playerA = 'A';
@@ -30,10 +53,18 @@ char currentPlayer= playerA;
 printf("\nPlayer A: %c\n", playerA);
 printf("Player B: %c\n\n", playerB);
 
+
+
 while (1){ 
 // print empty  broad first
 print(board);
-
+if (network==1){
+    if (netMode=='s'){
+        column = networkServer(currentPlayer, board);
+    }else if(netMode == 'c') {
+        column = networkClient(currentPlayer, board);
+    }
+} else{
 
 printf("Player %c, choose a column (1-7): ", currentPlayer);
 fflush(stdout);
@@ -53,10 +84,9 @@ if(currentPlayer == playerB) {
         column = easyBot(board); 
     } else if(mode == 2) {
         column = mediumBot(board); 
-    } else if(mode == 3) {
-        column = hardBot(board);
-    }
-      else {
+    } else if (mode==3){
+       column = hardBot(board);
+    } else{
         int status = scanf("%d", &column);
 
         if(status == 0) {
@@ -65,6 +95,7 @@ if(currentPlayer == playerB) {
             continue;
         }
     }
+}
 }
 
 if (column < 1 || column >7){
