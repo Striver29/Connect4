@@ -47,12 +47,25 @@ scanf("%d",&mode);
 }
 }
 
+char buff; 
+scanf("%c", buff); 
+
+printf("Do you want to be player A or B?\n"); 
+char player; 
+scanf("%c", player); 
+
 char playerA = 'A';
 char playerB = 'B';
-char currentPlayer= playerA;
+
+char currentPlayer; 
+if(player == 'A') {
+    currentPlayer= playerA;
+} else {
+    currentPlayer= playerB;
+}
+
 printf("\nPlayer A: %c\n", playerA);
 printf("Player B: %c\n\n", playerB);
-
 
 
 while (1){ 
