@@ -9,8 +9,7 @@ int** createGrid(){
         grid[i] = (int*)malloc(m * sizeof(int));
     }
 
-    return grid; 
-    
+    return grid;
 }
 
 
