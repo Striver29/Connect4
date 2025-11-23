@@ -6,9 +6,7 @@
 #include "headers.h"
 
 
-// ===============================
-//   SERVER SIDE
-// ===============================
+//server
 int startServer(int port) {
     int server_fd, client_fd;
     struct sockaddr_in address;
@@ -52,9 +50,7 @@ int startServer(int port) {
 }
 
 
-// ===============================
-//   CLIENT SIDE
-// ===============================
+//client
 int startClient(const char* ip, int port) {
     int sock;
     struct sockaddr_in serv_addr;
@@ -85,9 +81,7 @@ int startClient(const char* ip, int port) {
 }
 
 
-// ===============================
-//   SEND MOVE
-// ===============================
+
 void sendMove(int sock, int move) {
     if (send(sock, &move, sizeof(move), 0) <= 0) {
         printf("Error sending move.\n");
@@ -96,9 +90,6 @@ void sendMove(int sock, int move) {
 }
 
 
-// ===============================
-//   RECEIVE MOVE
-// ===============================
 int receiveMove(int sock) {
     int move;
     int bytes = recv(sock, &move, sizeof(move), 0);

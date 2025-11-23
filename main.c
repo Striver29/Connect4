@@ -10,9 +10,7 @@ int main(int argc, char **argv)
     int **board = createGrid();
     printf("Welcome to Connect Four!\n");
 
-    // ==========================
-    // NETWORK SELECTION
-    // ==========================
+    //Networking part
     printf("\n Enable network mode? (Enter s for server, c for client, n for normal): ");
     char netMode;
     scanf(" %c", &netMode);
@@ -43,9 +41,7 @@ int main(int argc, char **argv)
     char currentPlayer = playerA;
     int cond = 0;
 
-    // ==========================
-    // OFFLINE GAME SETUP
-    // ==========================
+    
     if (network == 0)
     {
         printf("\nDo you want to play against a human or a bot? \nEnter 0 for human\nEnter 1 for bot\n");
@@ -74,16 +70,13 @@ int main(int argc, char **argv)
     }
     else
     {
-        // Online: server ALWAYS starts as Player A
         currentPlayer = playerA;
     }
 
     printf("\nPlayer A = %c\n", playerA);
     printf("Player B = %c\n\n", playerB);
 
-    // ==========================
-    // SOCKET INITIALIZATION
-    // ==========================
+    //socket
     if (network == 1)
     {
         if (netMode == 's')
@@ -98,36 +91,30 @@ int main(int argc, char **argv)
         }
     }
 
-    // ==========================
-    // MAIN GAME LOOP
-    // ==========================
+
     while (1)
     {
         print(board);
 
         if (network == 1)
         {
-            // ==========================
-            // SERVER SIDE LOGIC
-            // ==========================
+            //server
             if (netMode == 's')
             {
-                if (currentPlayer == 'A')   // server's turn
+                if (currentPlayer == 'A')  
                 {
                     printf("Player A (server), choose column (1-7): ");
                     scanf("%d", &column);
                     sendMove(socket_fd, column);
                 }
-                else                        // waiting for client
+                else                       
                 {
                     printf("Waiting for Player B (client)...\n");
                     column = receiveMove(socket_fd);
                 }
             }
 
-            // ==========================
-            // CLIENT SIDE LOGIC
-            // ==========================
+            //client
             else if (netMode == 'c')
             {
                 if (currentPlayer == 'B')   // client's turn
@@ -146,9 +133,7 @@ int main(int argc, char **argv)
 
         else
         {
-            // ==========================
-            // OFFLINE PLAY
-            // ==========================
+            
             printf("Player %c, choose a column (1-7): ", currentPlayer);
             fflush(stdout);
 
@@ -223,9 +208,7 @@ int main(int argc, char **argv)
         }
     }
 
-        // ==========================
-        // MOVE VALIDATION
-        // ==========================
+        
         if (column < 1 || column > 7)
         {
             printf("\nInvalid! choose another.\n");
