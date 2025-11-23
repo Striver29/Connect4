@@ -28,11 +28,13 @@ int main(int argc, char **argv)
     {
         network = 1;
         printf("Enter port: ");
+        fflush(stdout);
         scanf("%d", &port);
 
         if (netMode == 'c')
         {
             printf("Enter server IP: ");
+            fflush(stdout);
             scanf("%s", serverIP);
         }
     }
@@ -87,11 +89,13 @@ int main(int argc, char **argv)
         {
             socket_fd = startServer(port);
             printf("Server ready.\n\n");
+            fflush(stdout);
         }
         else  // client
         {
             socket_fd = startClient(serverIP, port);
             printf("Client connected.\n\n");
+            fflush(stdout);
         }
     }
 
