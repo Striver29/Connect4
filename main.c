@@ -40,7 +40,8 @@ int main(int argc, char **argv)
 
     char playerA = 'A';
     char playerB = 'B';
-    char currentPlayer;
+    char currentPlayer = playerA;
+    int cond = 0;
 
     // ==========================
     // OFFLINE GAME SETUP
@@ -67,10 +68,9 @@ int main(int argc, char **argv)
         char player;
         scanf("%c", &player);
 
-        if (player == 'A')
-            currentPlayer = playerA;
-        else
-            currentPlayer = playerB;
+        if(player == 'B') {
+            cond = 1; 
+        }
     }
     else
     {
@@ -152,6 +152,8 @@ int main(int argc, char **argv)
             printf("Player %c, choose a column (1-7): ", currentPlayer);
             fflush(stdout);
 
+            if(!cond) {
+
             if (currentPlayer == playerA)
             {
                 int status = scanf("%d", &column);
@@ -183,7 +185,43 @@ int main(int argc, char **argv)
                     }
                 }
             }
+        } else {
+
+            if (currentPlayer == playerA)
+            {
+                if (mode == 1)
+                    column = easyBot(board);
+                else if (mode == 2)
+                    column = mediumBot(board);
+                else if (mode == 3)
+                    column = hardBot(board);
+                else
+                {
+                    int status = scanf("%d", &column);
+
+                    if (status == 0)
+                    {
+                        printf("\nInvalid! choose another.\n");
+                        while (getchar() != '\n');
+                        continue;
+                    }
+                }
+            }
+            else if (currentPlayer == playerB)
+            {
+
+                int status = scanf("%d", &column);
+
+                if (status == 0)
+                {
+                    printf("\nInvalid! choose another.\n");
+                    while (getchar() != '\n');
+                    continue;
+                }
+            }
+
         }
+    }
 
         // ==========================
         // MOVE VALIDATION
