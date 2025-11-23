@@ -45,7 +45,7 @@ int startServer(int port) {
 
     printf("Client connected!\n");
 
-    close(server_fd); // only client socket needed
+    close(server_fd); 
     return client_fd;
 }
 
