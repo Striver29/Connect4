@@ -1,9 +1,52 @@
 #include <stdio.h>
+#include <pthread.h>
 #include "headers.h"
 
-int checkWin(int** arr, int current) {
+typedef struct CheckArgs {
+    int **arr;
+    int current;
+    int result;
+} CheckArgs;
 
-    return horizontal(arr, current) || vertical(arr, current) || diagonal(arr, current); 
+
+void *horizontal_thread(void *arg) {
+    CheckArgs *a = (CheckArgs *)arg;
+    a->result = horizontal(a->arr, a->current);
+    return NULL;
+}
+
+void *vertical_thread(void *arg) {
+    CheckArgs *a = (CheckArgs *)arg;
+    a->result = vertical(a->arr, a->current);
+    return NULL;
+}
+
+void *diagonal_thread(void *arg) {
+    CheckArgs *a = (CheckArgs *)arg;
+    a->result = diagonal(a->arr, a->current);
+    return NULL;
+}
+
+
+int checkWin(int** arr, int current) {
+    pthread_t th_h, th_v, th_d;
+
+    CheckArgs hArgs = { arr, current, 0 };
+    CheckArgs vArgs = { arr, current, 0 };
+    CheckArgs dArgs = { arr, current, 0 };
+
+    pthread_create(&th_h, NULL, horizontal_thread, &hArgs);
+    pthread_create(&th_v, NULL, vertical_thread, &vArgs);
+    pthread_create(&th_d, NULL, diagonal_thread, &dArgs);
+
+    pthread_join(th_h, NULL);
+    pthread_join(th_v, NULL);
+    pthread_join(th_d, NULL);
+
+    if (hArgs.result || vArgs.result || dArgs.result) {
+        return 1;
+    }
+    return 0;
 }
 
 int horizontal(int** arr, int current) {
