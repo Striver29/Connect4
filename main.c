@@ -10,6 +10,7 @@ int main(int argc, char **argv)
     int **board = createGrid();
     printf("Welcome to Connect Four!\n");
     printf("\nAre you using Alpine? (Enter y for Yes and n for no): ");
+    fflush(stdout); 
     char type; 
     scanf("%c", &type);
     //Networking part
