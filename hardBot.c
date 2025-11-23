@@ -2,7 +2,7 @@
 #include "headers.h"
 #define BOT 2
 #define OPP 1
-#define DEPTH 6
+#define DEPTH 8
 #define INFINITY 100000000000
 
 
