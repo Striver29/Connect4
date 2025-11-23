@@ -112,6 +112,7 @@ int main(int argc, char **argv)
                 if (currentPlayer == 'A')  
                 {
                     printf("Player A (server), choose column (1-7): ");
+                    fflush(stdout); 
                     scanf("%d", &column);
                     sendMove(socket_fd, column);
                 }
@@ -128,12 +129,14 @@ int main(int argc, char **argv)
                 if (currentPlayer == 'B')   // client's turn
                 {
                     printf("Player B (client), choose column (1-7): ");
+                    fflush(stdout); 
                     scanf("%d", &column);
                     sendMove(socket_fd, column);
                 }
                 else                        // waiting for server
                 {
                     printf("Waiting for Player A (server)...\n");
+                    fflush(stdout); 
                     column = receiveMove(socket_fd);
                 }
             }
@@ -154,6 +157,7 @@ int main(int argc, char **argv)
                 if (status == 0)
                 {
                     printf("\nInvalid! choose another.\n");
+                    fflush(stdout); 
                     while (getchar() != '\n');
                     continue;
                 }
@@ -173,6 +177,7 @@ int main(int argc, char **argv)
                     if (status == 0)
                     {
                         printf("\nInvalid! choose another.\n");
+                        fflush(stdout); 
                         while (getchar() != '\n');
                         continue;
                     }
@@ -208,6 +213,7 @@ int main(int argc, char **argv)
                 if (status == 0)
                 {
                     printf("\nInvalid! choose another.\n");
+                    fflush(stdout); 
                     while (getchar() != '\n');
                     continue;
                 }
@@ -220,12 +226,14 @@ int main(int argc, char **argv)
         if (column < 1 || column > 7)
         {
             printf("\nInvalid! choose another.\n");
+            fflush(stdout); 
             continue;
         }
 
         if (!place(board, column, currentPlayer))
         {
             printf("\nColumn full! Choose another.\n");
+            fflush(stdout); 
             continue;
         }
 
@@ -235,6 +243,7 @@ int main(int argc, char **argv)
         {
             print(board, type);
             printf("Player %c wins!\n", currentPlayer);
+            fflush(stdout); 
             break;
         }
 
