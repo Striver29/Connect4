@@ -11,8 +11,6 @@ int diagonal(int** arr, int current);
 int easyBot(int** arr); 
 int mediumBot(int** arr); 
 int hardBot(int** arr);
-int startServer(int port);
-int startClient(const char* ip, int port);
-void sendMove(int sock, int move);
-int receiveMove(int sock);
+int networkServer(char current, int** arr);
+int networkClient(char current, int** arr);
 #endif

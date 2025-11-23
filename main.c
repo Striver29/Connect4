@@ -11,26 +11,25 @@ int main(int argc, char **argv)
     printf("Welcome to Connect Four!\n");
 
     // networking part
-    printf("\n Enable network mode? (Enter s for server, c for client, n for normal): ");
+    printf("\n Enable network mode?(Enter s for server, c for client, n for normal): ");
     char netMode;
     scanf(" %c", &netMode);
 
     int network = 0;
     int port = 0;
-    int socket_fd = -1;
-    char serverIP[64];
 
     if (netMode == 's' || netMode == 'c')
     {
         network = 1;
-
-        printf("Enter port: ");
-        scanf("%d", &port);
-
-        if (netMode == 'c')
+        if (netMode == 's')
         {
-            printf("Enter server IP: ");
-            scanf("%s", serverIP);
+            printf("Enter port to listen to: ");
+            scanf("%d", &port);
+        }
+        else if (netMode == 'c')
+        {
+            printf("Enter server port to connect to: ");
+            scanf("%d", &port);
         }
     }
 
@@ -51,122 +50,89 @@ int main(int argc, char **argv)
 
         if (x == 1)
         {
-            printf("Choose the level: \nEnter 1 for easy\nEnter 2 for medium\nEnter 3 for hard\n");
+            printf("Choose the level: \nEnter 1 for easy\nEnter 2 for Medium\nEnter 3 for Hard\n");
             fflush(stdout);
             scanf("%d", &mode);
         }
 
         int c;
-        while ((c = getchar()) != '\n' && c != EOF)
-        {
-        }
+        while ((c = getchar()) != '\n' && c != EOF) {}
 
         printf("Do you want to be player A or B?\n");
         char player;
         scanf("%c", &player);
 
         if (player == 'A')
+        {
             currentPlayer = playerA;
+        }
         else
+        {
             currentPlayer = playerB;
+        }
     }
     else
     {
-        currentPlayer = playerA; // server always starts
+        currentPlayer = playerA;
     }
 
     printf("\nPlayer A: %c\n", playerA);
     printf("Player B: %c\n\n", playerB);
 
-    // ------------------------
-    // SOCKET CONNECTION SETUP
-    // ------------------------
-    if (network == 1)
-    {
-        if (netMode == 's')
-        {
-            socket_fd = startServer(port);
-            printf("Server ready.\n\n");
-        }
-        else
-        {
-            socket_fd = startClient(serverIP, port);
-            printf("Client connected.\n\n");
-        }
-    }
-
-    // -----------------------
-    // MAIN GAME LOOP
-    // -----------------------
     while (1)
     {
         print(board);
 
-        // NETWORK MODE
         if (network == 1)
         {
             if (netMode == 's')
             {
-                if (currentPlayer == 'A')
-                {
-                    printf("Player A (server), choose a column (1-7): ");
-                    scanf("%d", &column);
-                    sendMove(socket_fd, column);
-                }
-                else
-                {
-                    printf("Waiting for Player B (client)...\n");
-                    column = receiveMove(socket_fd);
-                }
+                column = networkServer(currentPlayer, board);
             }
             else if (netMode == 'c')
             {
-                if (currentPlayer == 'B')
-                {
-                    printf("Player B (client), choose a column (1-7): ");
-                    scanf("%d", &column);
-                    sendMove(socket_fd, column);
-                }
-                else
-                {
-                    printf("Waiting for Player A (server)...\n");
-                    column = receiveMove(socket_fd);
-                }
+                column = networkClient(currentPlayer, board);
             }
         }
         else
         {
-            // LOCAL MODE
             printf("Player %c, choose a column (1-7): ", currentPlayer);
             fflush(stdout);
 
             if (currentPlayer == playerA)
             {
                 int status = scanf("%d", &column);
+
                 if (status == 0)
                 {
                     printf("\nInvalid! choose another.\n");
-                    while (getchar() != '\n')
-                        ;
+                    while (getchar() != '\n');
                     continue;
                 }
             }
-            else if (currentPlayer == playerB)
+
+            if (currentPlayer == playerB)
             {
                 if (mode == 1)
+                {
                     column = easyBot(board);
+                }
                 else if (mode == 2)
+                {
                     column = mediumBot(board);
+                }
                 else if (mode == 3)
+                {
                     column = hardBot(board);
+                }
                 else
                 {
                     int status = scanf("%d", &column);
+
                     if (status == 0)
                     {
                         printf("\nInvalid! choose another.\n");
-                        while (getchar() != '\n')
-                            ;
+                        while (getchar() != '\n');
                         continue;
                     }
                 }
@@ -186,21 +152,28 @@ int main(int argc, char **argv)
         }
 
         int win = checkWin(board, (64 - currentPlayer) * -1);
+
         if (win == 1)
         {
             print(board);
-            printf("Player %c wins!\n", currentPlayer);
+            printf("Player %c wins!", currentPlayer);
             break;
         }
 
-        // switch players
         if (currentPlayer == playerA)
+        {
             currentPlayer = playerB;
+        }
         else
+        {
             currentPlayer = playerA;
+        }
     }
 
     for (int i = 0; i < 6; i++)
+    {
         free(board[i]);
+    }
+
     free(board);
 }
