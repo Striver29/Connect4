@@ -1,107 +1,109 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h> // toupper
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 #include "headers.h"
 
-// helper function to read from the other computer 
-static int readMove(void){
-char buffer[128];
-int col = -1;// -1 for invalid move
+// ------------------------------
+// Create the server socket
+// ------------------------------
+int startServer(int port) {
+    int server_fd, client_fd;
+    struct sockaddr_in address;
+    socklen_t addrlen = sizeof(address);
 
-// while loop(infinite) to keep read from the user until we get the number of  column
-while (1){
-// reading from user / stdin
-
-// if EOF/ ERROR  return -1(which is invalid input)
-if (fgets(buffer, sizeof(buffer), stdin)== NULL){
-return -1;
-}
-for (int i = 0; buffer[i] != '\0'; i++) {
- buffer[i] = toupper((unsigned char)buffer[i]);
-}
-if (sscanf(buffer, "MOVE %d", &col)==1 || sscanf(buffer, "%d", &col)==1){
-    return col;
-}
-}
-}
-
-int networkServer(char current, int** arr){
-int col=-1;
-// player A 
-if (current=='A'){
-    while (1){
-     printf("Player A (server), enter column (1-7): ");//
-        fflush(stdout);    
-     if (scanf("%d", &col) != 1) {   // scanf returns 1 when it reads one integer only
-        printf("Invalid input. Please enter a number: \n");
-        while (getchar() != '\n')   // to remove the other unneeded parts like move
-                continue;    
-    }
-    // send the move to the other computers
-    printf("MOVE %d\n", col);        
-            fflush(stdout);             // Make sure the message is sent immediately
-
-
-       return col;
+    server_fd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_fd < 0) {
+        perror("socket failed");
+        exit(1);
     }
 
-}else {
-// player B's turn
-    //print it to the client 
-    printf("Waiting for Player 2 (client) move...\n");
-        fflush(stdout);   
-    col = readMove(); // read from the client 
-   if (col == -1) {                // -1  error or disconnection
-            printf("Connection closed or invalid move received.\n");
-        }
+    int opt = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
-    return col;    
- }
+    address.sin_family = AF_INET;
+    address.sin_addr.s_addr = INADDR_ANY;   // listen on all interfaces
+    address.sin_port = htons(port);
+
+    if (bind(server_fd, (struct sockaddr*)&address, sizeof(address)) < 0) {
+        perror("bind failed");
+        exit(1);
+    }
+
+    if (listen(server_fd, 1) < 0) {
+        perror("listen failed");
+        exit(1);
+    }
+
+    printf("Waiting for a client to connect on port %d...\n", port);
+
+    client_fd = accept(server_fd, (struct sockaddr*)&address, &addrlen);
+    if (client_fd < 0) {
+        perror("accept failed");
+        exit(1);
+    }
+
+    printf("Client connected!\n");
+
+    close(server_fd); // We only need client socket now
+    return client_fd;
 }
 
 
-int networkClient(char current, int** arr){
-int col = -1;
+// ------------------------------
+// Connect to server as a client
+// ------------------------------
+int startClient(const char* ip, int port) {
+    int sock;
+    struct sockaddr_in serv_addr;
 
-
-    // client = Player  B
-    //  the client should ask its LOCAL user
-    if (current == 'B') {
-
-        while (1) {                     
-            printf("Player 2 (client), enter column (1-7): ");
-            fflush(stdout);           
-            if (scanf("%d", &col) != 1) {   
-                printf("Invalid input. Please enter a number.\n");
-                while (getchar() != '\n'){
-                    ;
-                }
-
-                continue;             
-            }
-
-            // Send the move to the server through stdout
-            printf("MOVE %d\n", col);
-            fflush(stdout);            
-
-            return col;               // Return move so client can update its own board  
-        }
-
-    }
-    else {
-        // the server will send the move to the client
-
-        printf("Waiting for Player 1 (server) move...\n");
-        fflush(stdout);                 
-
-        col = readMove();               
-
-        if (col == -1) {                
-            printf("Connection closed or invalid move received.\n");
-        }
-
-        return col;   
-
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0) {
+        perror("socket failed");
+        exit(1);
     }
 
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
+
+    if (inet_pton(AF_INET, ip, &serv_addr.sin_addr) <= 0) {
+        printf("Invalid address/ Not supported\n");
+        exit(1);
+    }
+
+    printf("Connecting to server %s:%d...\n", ip, port);
+
+    if (connect(sock, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+        perror("connection failed");
+        exit(1);
+    }
+
+    printf("Connected!\n");
+    return sock;
+}
+
+
+// ------------------------------
+// Send a move
+// ------------------------------
+void sendMove(int sock, int move) {
+    send(sock, &move, sizeof(move), 0);
+}
+
+
+// ------------------------------
+// Receive a move
+// ------------------------------
+int receiveMove(int sock) {
+    int move;
+    int bytes = recv(sock, &move, sizeof(move), 0);
+
+    if (bytes <= 0) {
+        printf("Connection closed.\n");
+        exit(1);
+    }
+
+    return move;
 }
