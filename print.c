@@ -13,7 +13,7 @@ void print(int **arr, char type)
             printf(" ");
             for (int j = 0; j < 7; j++)
             {
-
+s
                 if (arr[i][j] == 0)
                 {
                     printf("⚪ "); // empty
