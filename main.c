@@ -9,9 +9,12 @@ int main(int argc, char **argv)
 {
     int **board = createGrid();
     printf("Welcome to Connect Four!\n");
-
+    printf("\nAre you using Alpine? (Enter y for Yes and n for no): ");
+    char type; 
+    scanf("%c", &type);
     //Networking part
-    printf("\n Enable network mode? (Enter s for server, c for client, n for normal): ");
+    printf("\nEnable network mode? (Enter s for server, c for client, n for normal): ");
+    fflush(stdout); 
     char netMode;
     scanf(" %c", &netMode);
 
@@ -94,7 +97,7 @@ int main(int argc, char **argv)
 
     while (1)
     {
-        print(board);
+        print(board, type);
 
         if (network == 1)
         {
@@ -225,7 +228,7 @@ int main(int argc, char **argv)
 
         if (win == 1)
         {
-            print(board);
+            print(board, type);
             printf("Player %c wins!\n", currentPlayer);
             break;
         }

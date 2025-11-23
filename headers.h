@@ -1,7 +1,7 @@
 #ifndef HEADERS_H
 #define HEADERS_H
 
-void print(int**);
+void print(int**, char);
 int** createGrid();
 int place(int**, int, char);
 int checkWin(int** arr, int current); 
