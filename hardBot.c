@@ -40,10 +40,10 @@ int evaluateWindow(int arr[]) {
     }
 
     if (bot == 4) return 100000;
-    else if (bot == 3 && empty == 1) return 100;
-    else if (bot == 2 && empty == 2) return 10;
-    else if (opp == 3 && empty == 1) return -300;
-    else if (opp == 2 && empty == 2) return -10;
+    else if (bot == 3 && empty == 1) return 1000;
+    else if (bot == 2 && empty == 2) return 50;
+    else if (opp == 3 && empty == 1) return -1200;
+    else if (opp == 2 && empty == 2) return -50;
 
     return 0;
 }
