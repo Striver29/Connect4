@@ -5,7 +5,7 @@
 
 #define BOT 2
 #define OPP 1
-#define DEPTH 8
+#define DEPTH 10
 #define INFINITY 100000000000L
 
 int checkFull(int **arr) {
