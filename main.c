@@ -111,15 +111,18 @@ int main(int argc, char **argv)
             {
                 if (currentPlayer == 'A')  
                 {
-                    printf("Player A (server), choose column (1-7): ");
+                    printf("Player A (server), choose column (1-7): \n\n");
                     fflush(stdout); 
                     scanf("%d", &column);
                     sendMove(socket_fd, column);
+                    printf("Player A played in column %d\n", column);
                 }
                 else                       
                 {
                     printf("Waiting for Player B (client)...\n");
                     column = receiveMove(socket_fd);
+                    printf("Player B played in column %d\n", column);
+
                 }
             }
 
@@ -132,12 +135,16 @@ int main(int argc, char **argv)
                     fflush(stdout); 
                     scanf("%d", &column);
                     sendMove(socket_fd, column);
+                    printf("Player B played in column %d\n", column);
+
                 }
                 else                        // waiting for server
                 {
                     printf("Waiting for Player A (server)...\n");
                     fflush(stdout); 
                     column = receiveMove(socket_fd);
+                    printf("Player A played in column %d\n", column);
+
                 }
             }
         }
@@ -236,6 +243,8 @@ int main(int argc, char **argv)
             fflush(stdout); 
             continue;
         }
+
+        printf("\n\nPlayer %c played in column %d\n", currentPlayer, column); 
 
         int win = checkWin(board, (64 - currentPlayer) * -1);
 
